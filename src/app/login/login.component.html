@@ -1,0 +1,81 @@
+<div *ngIf="message">
+
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Register process</strong> {{message}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+  
+  <div *ngIf="messageLogin">
+  
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Login process</strong> {{messageLogin}}
+      <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button> -->
+    </div>
+  </div>
+  
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+      <h1 >
+        Demo Manager Angajati 
+      </h1> 
+      <p> by Dan Rujan</p>
+
+
+<br>
+
+
+    <div class="center">
+        <input [(ngModel)]="username"  matInput placeholder="Username">
+        
+        <br>
+
+        <input [(ngModel)]="password" type="password" matInput placeholder="Password">
+    </div>
+
+ 
+
+  <br>
+  
+  <div  class="center">
+    <button class="btn btn-success" (click)="login(username, password)">Login</button>
+  </div>
+
+
+  
+  
+  
+  
+  <!-- <hr>
+  <div>
+    <h2>Register</h2>
+  
+    <div>
+      <mat-form-field>
+        <input [(ngModel)]="emailRegister" matInput placeholder="Email">
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+  
+        <input [(ngModel)]="passwordRegister" type="password" matInput placeholder="Password">
+      </mat-form-field>
+    </div>
+  
+  </div> -->
+  
+<!--   
+  <div>
+    <button mat-button (click)="register(usernameRegister, passwordRegister, emailRegister)">Register</button>
+  </div> -->

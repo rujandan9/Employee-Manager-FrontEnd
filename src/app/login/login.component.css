@@ -1,0 +1,17 @@
+h1,p{
+    text-align: center;
+    color: rgb(138, 35, 35);
+}
+
+.center{
+margin: auto;
+width: 50%;
+text-align: center;
+}
+
+#body {
+    background-image: url('src\assets\images\road.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }

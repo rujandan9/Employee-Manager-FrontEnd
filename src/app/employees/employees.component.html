@@ -1,0 +1,429 @@
+<nav class="navbar navbar-dark bg-primary">
+  <div class="container-fluid row">
+    <a class="navbar-brand">Manger Angajati</a>
+
+    <div class="float-right row">
+
+      <select style="width: fit-content; width: -moz-fit-content;     margin-right: 15px;" class="form-control xo"
+        type="button" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false" [(ngModel)]="selectedFunctie"
+        (ngModelChange)="onChangeSelectStatus($event)">
+
+        <option> toate </option>  
+        <option [ngValue]="">muncitora necalifcat</option>
+        <option [ngValue]="">muncitor calificat</option>
+        <option [ngValue]="">mecanic</option>
+        <option [ngValue]="">sofer</option>
+        <option [ngValue]="">inginer</option>
+        <option [ngValue]="">sef echipa</option>
+        <option [ngValue]="">gestionar</option>
+        <option [ngValue]="">personal birou</option>
+      </select>
+      <input type="text" style="width: 300px;     margin-right: 15px; " class="form-control xo" [(ngModel)]="searchTerm"
+        placeholder="Search...">
+
+      <button class="btn btn-outline-danger xo" (click)="logout()">Logout</button>
+
+    </div>
+
+  </div>
+
+
+</nav>
+
+<br>
+
+<div class="container-fluid">
+
+  <div class="table-responsive">
+
+    <table class="table table-bordered" width="100%" cellspacing="0">
+      <thead>
+        <tr>
+  
+          <th>Id</th>
+          <th>Name</th>
+          <th>Prenume</th>
+          <th>Functie</th>
+          <th>Salariu</th>
+          <th>Data nasterii</th>
+          <th>Data angajarii</th>
+          <th>Telefon</th>
+          <th>Detalii</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let em of employeeList | slice: (page-1) * pageSize : page * pageSize | searchFilter:searchTerm ">
+
+          <td>{{em.id}}</td>
+          
+          <td> {{em.name}} </td>
+
+          <td> {{em.prenume}} </td>
+
+          <td> {{em.functie}} </td>
+
+          <td> {{em.salariu}} </td>
+
+          <td> {{em.varsta | date: 'dd/MM/yyyy'}} </td>
+
+
+          <td> {{em.dataAngajarii | date: 'dd/MM/yyyy'}} </td>
+
+          <td> {{em.telefon}} </td>
+
+          <td style="width: 70px;">
+            <a title="More details" (click)="openEdit(contentEdit , em)" class="btn btn-warning btn-circle">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+                <path
+                  d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+              </svg>
+
+            </a>
+
+            <!-- <button type="button" class="btn btn-danger" (click)="deleteAngajat(em.id)">Sterge</button> -->
+            <!-- <button type="button" class="btn btn-warning" (click)="openEdit(contentEdit , em)">Detalii</button> -->
+          </td>
+
+
+        </tr>
+      </tbody>
+    </table>
+    <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="employeeList.length"></ngb-pagination>
+
+    <br>
+
+
+    <button type="button" class="btn btn-success" (click)="open(content)">Adauga Angajat</button>
+    <button type="button" class="btn btn-warning" (click)="redirect()" style="margin-left: 2cm;" >Imagini</button>
+
+    <br>
+    <br>
+
+  
+
+
+  </div>
+</div>
+
+
+
+<!-- <ngb-pagination [(page)]="pagei" [pageSize]="pageiSize" [collectionSize]="displayedListUtilized.length"></ngb-pagination> -->
+<ng-template #contentImagine let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Adauga Imagine Noua</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+
+
+    <div class="row">
+      <div class="col">
+        <label for="func">Tip Poza</label>
+        <select class="btn btn-primary dropdown-toggle " type="button" id="statusSelect" aria-haspopup="true"
+          aria-expanded="false" [(ngModel)]="imageType" required>
+          <option> </option>
+          <option [ngValue]="'buletin'">buletin</option>
+          <option [ngValue]="'permis'">permis</option>
+
+        </select>
+      </div>
+      <div class="col">
+        <label for="">ID Angajat</label> <br>
+        <input type="number" class="form-control" placeholder="salariu" [(ngModel)]="idAngajatSelectat" id="sal" required>
+      </div>
+    </div>
+
+    <div class="container row">
+      <div class="col-md-12">
+        <label>Upload Image</label>
+      </div>
+    </div>
+
+    <div class="container row">
+      <div class="col-md-6">
+        <input type="file" (change)="onFileChanged($event)">
+
+      </div>
+      <div class="col-md-6">
+        <!-- <input type="button" (click)="onUpload()" value="upload"> -->
+      </div>
+    </div>
+    <hr />
+    <div class="container row">
+      <div class="col-md-12">
+        <div *ngIf=message>{{message}}</div>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-success"  (click)="onUpload()">Adauga</button>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Inchide</button>
+  </div>
+</ng-template>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Adauga profil nou</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="EqName">Nume</label>
+          <input type="text" class="form-control" placeholder="nume" [(ngModel)]="newEmployee.name" id="eqName"
+            required>
+        </div>
+
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="EqName2">Prenume</label>
+          <input type="text" class="form-control" placeholder="prenume" [(ngModel)]="newEmployee.prenume" id="eqName2"
+            required>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label for="func">Functie</label>
+        <select class="btn btn-primary dropdown-toggle " type="button" id="statusSelect" aria-haspopup="true"
+          aria-expanded="false" [(ngModel)]="newEmployee.functie" required>
+          <option> </option>
+          <option [ngValue]="">muncitora necalifcat</option>
+          <option [ngValue]="">muncitor calificat</option>
+          <option [ngValue]="">mecanic</option>
+          <option [ngValue]="">sofer</option>
+          <option [ngValue]="">inginer</option>
+          <option [ngValue]="">sef echipa</option>
+          <option [ngValue]="">gestionar</option>
+          <option [ngValue]="">personal birou</option>
+        </select>
+      </div>
+      <div class="col">
+        <label for="">Salariu</label> <br>
+        <input type="number" class="form-control" placeholder="salariu" [(ngModel)]="newEmployee.salariu" id="sal"
+          required>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="dueIn">Data Angajarii</label>
+          <input type="date" class="form-control" [(ngModel)]="newEmployee.dataAngajarii" id="dueIn" name="dueIn"
+            required>
+        </div>
+      </div>
+      <div class="col">
+        <label for="tel">Telefon</label>
+        <input type="number" class="form-control" placeholder="telefon" [(ngModel)]="newEmployee.telefon" id="tel"
+          required>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="dueIn">Data Nasterii </label>
+          <input type="date" class="form-control" [(ngModel)]="newEmployee.varsta" id="dueIn" name="dueIn" required>
+        </div>
+      </div>
+      <div class="col">
+
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-success" (click)="adaugaAngajat()">Adauga</button>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Inchide</button>
+  </div>
+</ng-template>
+
+
+
+<ng-template #contentEdit let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Detalii profil - {{employeeEdit.id}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="EqName">Nume</label>
+          <input type="text" class="form-control" placeholder="nume" [(ngModel)]="employeeEdit.name" id="eqName"
+            required>
+        </div>
+
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="EqName2">Prenume</label>
+          <input type="text" class="form-control" placeholder="prenume" [(ngModel)]="employeeEdit.prenume" id="eqName2"
+            required>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label for="func">Functie</label>
+        <select class="btn btn-primary dropdown-toggle " type="button" id="statusSelect" aria-haspopup="true"
+          aria-expanded="false" [(ngModel)]="employeeEdit.functie" required>
+          <option> </option>
+          <option [ngValue]="">muncitora necalifcat</option>
+          <option [ngValue]="">muncitor calificat</option>
+          <option [ngValue]="">mecanic</option>
+          <option [ngValue]="">sofer</option>
+          <option [ngValue]="">inginer</option>
+          <option [ngValue]="">sef echipa</option>
+          <option [ngValue]="">gestionar</option>
+          <option [ngValue]="">personal birou</option>
+
+        </select>
+      </div>
+      <div class="col">
+        <label for="">Salariu</label> <br>
+        <input type="number" class="form-control" placeholder="salariu" [(ngModel)]="employeeEdit.salariu" id="sal"
+          required>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+
+          <p>Data Angajarii : {{employeeEdit.dataAngajarii | date: 'dd/MM/yyyy'}}</p>
+          <p>Data Nasterii : {{employeeEdit.dataAngajarii | date: 'dd/MM/yyyy'}}</p>
+        </div>
+      </div>
+      <div class="col">
+        <label for="tel">Telefon</label>
+        <input type="number" class="form-control" placeholder="telefon" [(ngModel)]="employeeEdit.telefon" id="tel"
+          required>
+      </div>
+    </div>
+
+
+
+    <br>
+    <div class="row">
+      <button type="button" class="btn btn-success" (click)="openEdit(contentImagine, employeeEdit)" style="margin-left: 15px;" >Adauga Imagine</button>
+    </div>
+   
+    <br>
+
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-success" (click)="veziBuletin(employeeEdit)">VEZI BULETIN</button>
+      </div>
+      <div *ngIf="imagineBuletin && hideShowBuletin == true">
+        <img [src]="imagineBuletin.picByte" alt="Imagine buletin" style="width: 100%;">
+      </div>
+      <div class="col">
+        <button type="button" class="btn btn-danger" (click)="veziPermis(employeeEdit)">VEZI PERMIS</button>
+      </div>
+      <div *ngIf="imaginePermis && hideShowPermis == true">
+        <img [src]="imaginePermis.picByte" alt="Imagine permis" style="width: 100%;">
+      </div>
+      <!-- ADAUGA IMAGINI IN VIEW DETAILS -->
+      <!-- <div class="container row">
+        <div class="col-md-12">
+          <label>Upload Image</label>
+        </div>
+      </div>
+
+      <div class="container row">
+        <div class="col-md-6">
+          <input type="file" (change)="onFileChanged($event)">
+
+        </div>
+        <div class="col-md-6">
+          <input type="button" (click)="onUpload()" value="upload">
+        </div>
+      </div>
+      <hr />
+      <div class="container row">
+        <div class="col-md-12">
+          <div *ngIf=message>{{message}}</div>
+        </div>
+      </div>
+ -->
+
+
+      <!-- <div class="container row">
+        <div class="col-md-6">
+          <input type="text" class="form-control" id="name" placeholder="image name" [(ngModel)]="imageName"
+            name="name" />
+        </div>
+        <div class="col-md-6">
+          <input type="button" (click)="getImage()" value="Get Image">
+
+        </div>
+      </div> -->
+
+      <div class="container row">
+        <div class="col-md-12">
+          <div *ngIf=retrievedImage>
+            <!-- <img [src]="retreivedImage"> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group">
+        <div class="col">
+          <!-- TEXT AREA -->
+          <p>Observatii: </p>
+          <textarea name="" id="textAreaObservatii" class="form-control" [(ngModel)]="employeeEdit.observatii"
+            cols="100" rows="6"> </textarea>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-success" (click)="editAngajat(editID)">Editeaza</button>
+      </div>
+      <div class="col">
+        <button type="button" class="btn btn-danger" (click)="openConfirm(contentConfirm)">Sterge Angajat</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Inchide</button>
+  </div>
+</ng-template>
+
+<ng-template #contentConfirm let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Confirmati actiunea</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="deleteAngajat(editID)">Da, sterge angajat</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Renunta</button>
+  </div>
+</ng-template>
