@@ -310,7 +310,7 @@
         <div class="form-group">
 
           <p>Data Angajarii : {{employeeEdit.dataAngajarii | date: 'dd/MM/yyyy'}}</p>
-          <p>Data Nasterii : {{employeeEdit.dataAngajarii | date: 'dd/MM/yyyy'}}</p>
+          <p>Data Nasterii : {{employeeEdit.varsta | date: 'dd/MM/yyyy'}}</p>
         </div>
       </div>
       <div class="col">
@@ -401,7 +401,7 @@
 
     <div class="row">
       <div class="col">
-        <button type="button" class="btn btn-success" (click)="editAngajat(editID)">Editeaza</button>
+        <button type="button" class="btn btn-success" (click)="editAngajat(editID)">Salveaza modificarile</button>
       </div>
       <div class="col">
         <button type="button" class="btn btn-danger" (click)="openConfirm(contentConfirm)">Sterge Angajat</button>
